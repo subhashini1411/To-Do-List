@@ -1,20 +1,20 @@
 const express = require('express')
 const connectdb = require('./db')
-const ws=require("ws");
-const app=express();
+const ws = require("ws");
+const app = express();
 const bodyParser = require('body-parser')
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 require('dotenv').config();
 connectdb();
 
-const server=app.listen(5000, () => {
-    console.log('serving on port 5000....');
-  })
+const server = app.listen(5000, () => {
+  console.log('serving on port 5000....');
+});
 
-  
-const wss=new ws.Server({server});
-let todoList=["buymilk"];
+const wss = new ws.Server({ server });
+
+let todoList = ["buymilk"];
 wss.on('connection', (ws) => {
   // Send the current to-do list to the newly connected client
   ws.send(JSON.stringify({ todo_list: todoList }));
