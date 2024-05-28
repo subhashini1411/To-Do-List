@@ -23,19 +23,22 @@ wss.on('connection', (ws) => {
 
   ws.on('message', (message) => {
     const data = JSON.parse(message);
-    console.log(data);
     if (data.action === 'add') {
       // Add item to the to-do list
       todoList.push(data.item);
-      console.log(todoList)
     } else if (data.action === 'remove') {
       // Remove item from the to-do list
       todoList = todoList.filter(item => item !== data.item);
+    } else if (data.action === 'update') {
+      // Update item in the to-do list
+      const index = todoList.findIndex(item => item === data.oldItem);
+      if (index !== -1) {
+        todoList[index] = data.newItem;
+      }
     }
 
     // Send the updated to-do list to all connected clients
     const response = JSON.stringify({ todo_list: todoList });
-    ws.send(response);
     wss.clients.forEach(client => {
       if (client.readyState === ws.OPEN) {
         client.send(response);
