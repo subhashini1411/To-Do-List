@@ -1,23 +1,25 @@
-const Tasks=require('../models/taskModel');
-const getTotalTasks=async(req,res)=>{
-   
-     try {
-      const tasks = await Tasks.find();
-      // Send tasks as a response
-      return res.status(200).json({ tasks });     }
-       catch (error) {
-      console.error('Error ', error)
+const Tasks = require('../models/taskModel');
+const getTotalTasks = async (req, res) => {
+
+  try {
+    const tasks = await Tasks.find();
+    // Send tasks as a response
+    return res.status(200).json({ tasks });
+  }
+  catch (error) {
+    console.error('Error ', error)
     res.status(500).json({ error: 'Internal Server Error' })
-     }
+  }
 };
 const createTask = async (req, res) => {
   try {
-    const {Task}  = req.body;
+    const { Task } = req.body;
     console.log(req.body);
 
     if (!Task) {
-      res.status(400).json({ 
-        message: "task is required" });
+      res.status(400).json({
+        message: "task is required"
+      });
       return
     }
     const newtask = await Tasks.create({ Task });
@@ -33,11 +35,11 @@ const updateTask = async (req, res) => {
   try {
     const { Task } = req.body
     const currentTask = await Tasks.findOneAndUpdate(
-      { _id: req.params.id },{
-        $set: {
-          Task: Task,
-        },
-      }
+      { _id: req.params.id }, {
+      $set: {
+        Task: Task,
+      },
+    }
     )
     return res
       .status(200)
@@ -61,4 +63,4 @@ const deleteTask = async (req, res) => {
 }
 
 
-module.exports={getTotalTasks,createTask,updateTask,deleteTask};
+module.exports = { getTotalTasks, createTask, updateTask, deleteTask };
