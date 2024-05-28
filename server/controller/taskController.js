@@ -14,7 +14,6 @@ const getTotalTasks = async (req, res) => {
 const createTask = async (req, res) => {
   try {
     const { Task } = req.body;
-    console.log(req.body);
 
     if (!Task) {
       res.status(400).json({
